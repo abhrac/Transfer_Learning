@@ -1,6 +1,6 @@
 # Program for extracting MSERs from a given image dataset
 # Run the program as:
-# $ python run_mser_detector.py -split train/test
+# $ python run_mser_detector.py -split Train/Test
 # If no argument is given, "train" will be taken by default
 
 from mser import *
