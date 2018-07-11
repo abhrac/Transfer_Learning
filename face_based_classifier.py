@@ -78,7 +78,7 @@ def train_vgg16(train_data_path, test_data_path):
 	# Specify batch-size
 	batch_size = 64
 	# Specifiy number of epochs
-	num_epochs = 50
+	num_epochs = 100
 	# Create data-generator
 	generator  = datagen.flow(train_inputs, train_labels, batch_size=batch_size)
 	# Load base-model VGG16
