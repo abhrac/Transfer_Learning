@@ -82,8 +82,12 @@ def train_mser_based_classifier(train_data_path, test_data_path):
 	# Compile the model
 	model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 	# Train the final layers of the model
-	model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, shuffle=True, validation_data=(test_inputs, test_labels), callbacks=[plot_losses]+callbacks('mser_classifier_mdl_best.h5'))
-	# model.fit_generator(generator, epochs=num_epochs) #, verbose=1, shuffle=True, validation_data=(test_inputs, test_labels)), callbacks=[plot_losses]+callbacks('mser_classifier_mdl_best.h5'))
+	model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, 
+		  shuffle=True, validation_data=(test_inputs, test_labels), 
+		  callbacks=[plot_losses]+callbacks('mser_classifier_mdl_best.h5'))
+	# model.fit_generator(generator, epochs=num_epochs) #, verbose=1,
+	# shuffle=True, validation_data=(test_inputs, test_labels)),
+	# callbacks=[plot_losses]+callbacks('mser_classifier_mdl_best.h5'))
 	# Save the model as a json file
 	model_json = model.to_json()
 	with open("mser_classifier_model.json", "w") as json_file:
