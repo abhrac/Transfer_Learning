@@ -72,9 +72,9 @@ def train_mser_based_classifier(train_data_path, test_data_path):
 	# Create PlotLosses object for plotting training loss
 	plot_losses = PlotLosses()
 	# Specify batch-size
-	batch_size = 2
+	batch_size = 64
 	# Specifiy number of epochs
-	num_epochs = 2
+	num_epochs = 100
 	# Create data-generator
 	generator  = datagen.flow(train_inputs, train_labels, batch_size=batch_size)
 	# Create object for the new model
