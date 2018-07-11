@@ -32,14 +32,14 @@ class action_image_dataloader():
 		self.labels = self.labels[1:, :]
 		# Convert every image in the training set to RGB and resize them to (224, 224)
 		for i in range(len(self.inputs)):
-			if i >= 10:
-				break
+			#if i >= 10:
+			#	break
 			self.inputs[i] = cv2.resize(np.array(Image.open(self.inputs[i]).convert('RGB')), (224, 224))
 		# Convert the list containing the input images to a numpy array
-		self.inputs = np.array(self.inputs[:10])
+		self.inputs = np.array(self.inputs) #[:10])
 
 	def get_data(self):
-		return (self.inputs, self.labels[:10, :])
+		return (self.inputs, self.labels) #[:10, :])
 	
 	def __len__(self):
 		return(self.inputs.shape[0])
