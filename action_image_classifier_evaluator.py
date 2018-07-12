@@ -64,8 +64,8 @@ def evaluate_on_random_data(data_path, loaded_model):
 	# Iterate over all classes
 	for c in classes:
 		# Load test images
-		test_im1 = cv2.resize(np.array(Image.open(c + '1.jpg').convert('RGB')), (224, 224))
-		test_im2 = cv2.resize(np.array(Image.open(c + '2.jpg').convert('RGB')), (224, 224))
+		test_im1 = cv2.resize(np.array(Image.open(c + '1.png').convert('RGB')), (224, 224))
+		test_im2 = cv2.resize(np.array(Image.open(c + '2.png').convert('RGB')), (224, 224))
 		# Add a dummy dimension to the images to match the input dimensions of the classifier
 		test_im1 = np.expand_dims(test_im1, axis=0)
 		test_im2 = np.expand_dims(test_im2, axis=0)
@@ -93,23 +93,25 @@ def evaluate_classwise(data_path, loaded_model):
 		# Convert all images to RGB and resize to (224, 224)
 		for i in range(len(test_inputs)):
 			test_inputs[i] = cv2.resize(np.array(Image.open(test_inputs[i]).convert('RGB')), (224, 224))
+		# Get number of images
+		num_images = len(test_inputs)
 		# Convert input images to numpy array
 		test_inputs = np.array(test_inputs)
 		# Prepare labels for the images according to their class
-		test_labels = np.tile(labels[c],  (100, 1))
+		test_labels = np.tile(labels[c],  (num_images, 1))
 		# Get positive classification score
 		pos_score = loaded_model.evaluate(test_inputs, test_labels, batch_size=16, verbose=1)
 		print(pos_score)
 		# Calculate number of mis-classifications
-	for neg in classes:
-		if (neg == c):
-			continue
-		print("Negative " + neg + ":")
-		neg_labels = np.tile(labels[neg], (100, 1))
-		# Get mis-classification score for negative class neg
-		neg_score = loaded_model.evaluate(test_inputs, neg_labels, batch_size=16, verbose=1)
-		# Print mis-classification score
-		print(neg_score)
+		for neg in classes:
+			if (neg == c):
+				continue
+			print("Negative " + neg + ":")
+			neg_labels = np.tile(labels[neg], (num_images, 1))
+			# Get mis-classification score for negative class neg
+			neg_score = loaded_model.evaluate(test_inputs, neg_labels, batch_size=16, verbose=1)
+			# Print mis-classification score
+			print(neg_score)
 
 def evaluate_on_test_set(test_inputs, test_labels, loaded_model):
 	# Evaluate model on test set
@@ -138,7 +140,7 @@ def main():
 	# Load model
 	loaded_model = load_model(model_name)
 	# Specify data path
-	data_path = "/home/rick/Downloads/Datasets/Action_Images/"	
+	data_path = "Faces/"
 	# Compile loaded model
 	loaded_model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics=['accuracy'])
 	# Function-call for model evaluation
