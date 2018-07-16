@@ -7,7 +7,7 @@ import cv2
 from PIL import Image
 
 class action_image_dataloader():
-	def __init__(self, data_path, mode='Train'):
+	def __init__(self, data_path, mode='Train', resize_images=True):
 		# Enlist the classes present in the dataset
 		classes = os.listdir(data_path + mode + '/')
 		# sort classes by their names
@@ -30,6 +30,10 @@ class action_image_dataloader():
 			print(c, label_arr)
 		# Remove the initial dummy label
 		self.labels = self.labels[1:, :]
+		# Return, if images are not to be resized
+		if (resize_images == False):
+			#self.inputs = self.inputs[:10]
+			return
 		# Convert every image in the training set to RGB and resize them to (224, 224)
 		for i in range(len(self.inputs)):
 			#if i >= 10:
