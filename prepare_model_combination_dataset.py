@@ -1,5 +1,4 @@
 # Dataset preparation for training the model-combining neural network
-
 from __future__ import print_function
 from mser import *
 from face_detector_facenet import *
@@ -38,7 +37,7 @@ def load_data(data_path, mode="Train", resize_images=True):
 	test_inputs, test_labels = data.get_data()
 	return (test_inputs, test_labels)
 
-def get_predictions(inputs, labels):
+def save_predictions(inputs, labels, mode="Train"):
 	# Load basis, mser-based and face-based classifiers
 	basis_model = load_model("resnet50")
 	mser_model = load_model("mser_classifier")
@@ -71,15 +70,23 @@ def get_predictions(inputs, labels):
 	# Convert pred_features to a numpy array
 	pred_features = np.array(pred_features)
 	# Save pred_features
-	np.save("pred_features.npy", pred_features)
+	np.save(mode+"_pred_features.npy", pred_features)
 	print(pred_features.shape)
 	# Save the numpy array containing labels
-	np.save("labels.npy", labels)
+	np.save(mode+"_labels.npy", labels)
 
 def main():
-	data_path = "/home/rick/Downloads/Datasets/Action_Images/"
+	data_path = "Action_Images/"
+	# Load train set images
 	train_inputs, train_labels = load_data(data_path, resize_images=False)
-	get_predictions(train_inputs, train_labels)
+	print(len(train_inputs), " ", train_labels.shape)
+	# Save predictions for train set images
+	save_predictions(train_inputs, train_labels)
+	# Load test set images
+	test_inputs, test_labels = load_data(data_path, mode="Test", resize_images=False)
+	print(len(test_inputs), " ", test_labels.shape)
+	# Save predictions for test set images
+	save_predictions(test_inputs, test_labels, mode="Test")
 
 if __name__ == "__main__":
 	main()
