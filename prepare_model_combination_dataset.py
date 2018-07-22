@@ -67,6 +67,7 @@ def save_predictions(inputs, labels, mode="Train"):
 		probabilities = np.expand_dims(np.append(basis_pred, np.append(mser_pred, face_pred)), axis=0)
 		# Append the new set of features to pred_features
 		pred_features.append(probabilities)
+		print("Processing image ", i, " completed")
 	# Convert pred_features to a numpy array
 	pred_features = np.array(pred_features)
 	# Save pred_features
@@ -76,6 +77,7 @@ def save_predictions(inputs, labels, mode="Train"):
 	np.save(mode+"_labels.npy", labels)
 
 def main():
+    # Set data path
 	data_path = "Action_Images/"
 	# Load train set images
 	train_inputs, train_labels = load_data(data_path, resize_images=False)
