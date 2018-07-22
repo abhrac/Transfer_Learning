@@ -101,8 +101,6 @@ def evaluate_classwise(data_path):
 		probabilities = np.squeeze(probabilities, axis=1)
 		# Get number of images
 		num_images = 100
-		# Convert input images to numpy array
-		#test_inputs = np.array(test_inputs)
 		# Prepare labels for the images according to their class
 		test_labels = np.tile(labels[c],  (num_images, 1))
 		# Get positive classification score
