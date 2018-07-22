@@ -19,9 +19,9 @@ def train_combiner(train_inputs, train_labels, test_inputs, test_labels):
 	# Create PlotLosses object for plotting training loss
 	plot_losses = PlotLosses()
 	# Specify batch-size
-	batch_size = 10
+	batch_size = 1024
 	# Specifiy number of epochs
-	num_epochs = 100
+	num_epochs = 400
 	# Describe model architecture
 	inp = Input(shape=(11, ))
 	x = Dense(16, activation='relu')(inp)
@@ -33,10 +33,10 @@ def train_combiner(train_inputs, train_labels, test_inputs, test_labels):
 	# Train model
 	model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, shuffle=True,
 				validation_data=(test_inputs, test_labels),
-				callbacks=[plot_losses]+callbacks('combiner_model_best.h5'))
+				callbacks=[plot_losses]+callbacks('combiner_mdl_best.h5'))
 	# Save the model as a json file
 	model_json = model.to_json()
-	with open("resnet50_model.json", "w") as json_file:
+	with open("combiner_model.json", "w") as json_file:
 		json_file.write(model_json)
 	# Display plot for training losses
 	plt.show()
