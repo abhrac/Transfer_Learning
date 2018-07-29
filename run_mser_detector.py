@@ -66,7 +66,7 @@ def main():
 	parser.add_argument('-split', type=str, required=False, default='Train')
 	args = parser.parse_args()
 	# Specify dataset path
-	data_path = "/home/rick/Downloads/Datasets/Stanford_40_Actions/"
+	data_path = "Stanford_40_Actions/"
 	# Get dataset split from command-line argument
 	split = args.split
 	# Specify destination path
