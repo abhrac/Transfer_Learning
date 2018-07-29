@@ -32,19 +32,6 @@ def extract_faces_from_class(data_path, image_class, destination_path, split):
 			Image.fromarray(im).save(destination_path + image_class + '/' + image_class + '_faces_' + split + '_' + str(i) + '.png')
 			print("Saved " + image_class + '_faces_' + split + '_' + str(i) + '.png')
 
-def extract_faces_from_dataset(data_path, destination_path, split="Train"):
-	# Specify the data path for the corresponding split
-	data_path = data_path + split + "/"
-	# Specify the destination path for the corresponding split
-	destination_path = destination_path + split + "/"
-	# Specify the classes to be considered
-	classes, _ = get_classes_and_labels(data_path)
-	# Iterate over all the specified classes
-	for c in classes:
-		print("Extracting faces from " + c + " images...")
-		# Function-call for extracting faces from images of class c
-		extract_faces_from_class(data_path, c, destination_path, split)
-
 def get_classes_and_labels(data_path):
 	# Enlist class-names in the given dataset
 	classes = os.listdir(data_path) #['Concert', 'Cooking', 'Craft', 'Teleshopping', 'Yoga']
@@ -58,6 +45,19 @@ def get_classes_and_labels(data_path):
 	print(labels)
 	# Return class-names and labels
 	return (classes, labels)
+
+def extract_faces_from_dataset(data_path, destination_path, split="Train"):
+	# Specify the data path for the corresponding split
+	data_path = data_path + split + "/"
+	# Specify the destination path for the corresponding split
+	destination_path = destination_path + split + "/"
+	# Specify the classes to be considered
+	classes, _ = get_classes_and_labels(data_path)
+	# Iterate over all the specified classes
+	for c in classes:
+		print("Extracting faces from " + c + " images...")
+		# Function-call for extracting faces from images of class c
+		extract_faces_from_class(data_path, c, destination_path, split)
 
 def main():
 	# Parse command-line argument
