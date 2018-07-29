@@ -39,7 +39,9 @@ def fine_tune_resnet50(generator, train_inputs, train_labels, test_inputs, test_
 	model.compile(optimizer=SGD(lr=0.0001, momentum=0.9), loss='categorical_crossentropy', metrics=['accuracy'])
 	# Fine-tune the model wih a slow laerning rate and a non-adaptive optimization algorithm in-order
 	# to prevent massive gradient updates from wercking the previously learned weights
-	model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, shuffle=True, validation_data=(test_inputs, test_labels), callbacks=[plot_losses]+callbacks('resnet50_mdl_best_2.h5'))
+	model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, shuffle=True,
+		  validation_data=(test_inputs, test_labels),
+		  callbacks=[plot_losses]+callbacks('resnet50_mdl_best_2.h5'))
 	# model.fit_generator(generator, epochs=num_epochs, verbose=1, shuffle=True, validation_data=(test_inputs, test_labels), callbacks=[plot_losses]+callbacks('resnet50_mdl_best_2.h5'))
 	# Save the fine-tuned model as a json file
 	model_json = model.to_json()
@@ -95,7 +97,9 @@ def train_resnet50(train_data_path, test_data_path, num_classes):
 	# Compile the model
 	model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 	# Train the final layers of the model
-	model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, shuffle=True, validation_data=(test_inputs, test_labels), callbacks=[plot_losses]+callbacks('resnet50_mdl_best_1.h5'))
+	model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, shuffle=True,
+		  validation_data=(test_inputs, test_labels),
+		  callbacks=[plot_losses]+callbacks('resnet50_mdl_best_1.h5'))
 	# model.fit_generator(generator, epochs=num_epochs) #, verbose=1, shuffle=True, validation_data=(test_inputs, test_labels)), callbacks=[plot_losses]+callbacks('resnet50_mdl_best_1.h5'))
 	# Save the model as a json file
 	model_json = model.to_json()
