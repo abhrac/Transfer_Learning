@@ -15,7 +15,7 @@ from plot_losses import *
 from keras_callbacks import *
 from action_image_dataloader import *
 
-def train_combiner(train_inputs, train_labels, test_inputs, test_labels):
+def train_combiner(train_inputs, train_labels, test_inputs, test_labels, num_classes):
 	# Create PlotLosses object for plotting training loss
 	plot_losses = PlotLosses()
 	# Specify batch-size
@@ -25,7 +25,7 @@ def train_combiner(train_inputs, train_labels, test_inputs, test_labels):
 	# Describe model architecture
 	inp = Input(shape=(11, ))
 	x = Dense(16, activation='relu')(inp)
-	predictions = Dense(5, activation='softmax')(x)
+	predictions = Dense(num_classes, activation='softmax')(x)
 	# Create Model object
 	model = Model(inputs=inp, outputs=predictions)
 	# Compile model
@@ -52,8 +52,10 @@ def main():
 	train_inputs = np.squeeze(train_inputs, axis=1)
 	test_inputs = np.squeeze(test_inputs, axis=1)
 	print(train_inputs.shape, " ", test_inputs.shape)
+	# Get number of classes
+	num_classes = train_labels.shape[1]
 	# Function-call for training the model-combiner
-	train_combiner(train_inputs, train_labels, test_inputs, test_labels)
+	train_combiner(train_inputs, train_labels, test_inputs, test_labels, num_classes)
 
 if __name__ == "__main__":
 	main()
