@@ -2,6 +2,7 @@
 # Run the program as:
 # $ python run_mser_detector.py -split Train/Test
 # If no argument is given, "train" will be taken by default
+
 from __future__ import print_function
 from mser import *
 import numpy as np
