@@ -38,7 +38,9 @@ def fine_tune_vgg16(generator, train_inputs, train_labels, test_inputs, test_lab
 	# Fine-tune the model wih a slow laerning rate and a non-adaptive optimization algorithm in-order
 	# to prevent massive gradient updates from wercking the previously learned weights
 	#model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, shuffle=True, validation_data=(test_inputs, test_labels), callbacks=[plot_losses]+callbacks('mser_classifier_mdl_best_2.h5'))
-	model.fit_generator(generator, epochs=num_epochs, verbose=1, shuffle=True, validation_data=(test_inputs, test_labels), callbacks=[plot_losses]+callbacks('mser_classifier_mdl_best_2.h5'))
+	model.fit_generator(generator, epochs=num_epochs, verbose=1, shuffle=True,
+			    validation_data=(test_inputs, test_labels),
+			    callbacks=[plot_losses]+callbacks('mser_classifier_mdl_best_2.h5'))
 	# Save the fine-tuned model as a json file
 	model_json = model.to_json()
 	with open("mser_classifier_model.json", "w") as json_file:
@@ -48,7 +50,7 @@ def fine_tune_vgg16(generator, train_inputs, train_labels, test_inputs, test_lab
 	# Display plot training losses
 	plt.show()
 
-def train_vgg16(train_data_path, test_data_path):
+def train_vgg16(train_data_path, test_data_path, num_classes):
 	# Load train set
 	data = action_image_dataloader(train_data_path)
 	train_inputs, train_labels = data.get_data()
@@ -83,7 +85,7 @@ def train_vgg16(train_data_path, test_data_path):
 	x = Dropout(rate=0.5)(x)
 	x = GlobalAveragePooling2D()(x)
 	x = Dense(1024, activation='relu')(x)
-	predictions = Dense(4, activation='softmax')(x)
+	predictions = Dense(num_classes, activation='softmax')(x)
 	# Create object for the new model
 	model = Model(inputs=base_model.input, outputs=predictions)
 	# Freeze all the layers of the base-model
@@ -94,7 +96,9 @@ def train_vgg16(train_data_path, test_data_path):
 	model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 	# Train the final layers of the model
 	#model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, shuffle=True, validation_data=(test_inputs, test_labels), callbacks=[plot_losses]+callbacks('mser_classifier_mdl_best_1.h5'))
-	model.fit_generator(generator, epochs=num_epochs, verbose=1, shuffle=True, validation_data=(test_inputs, test_labels), callbacks=[plot_losses]+callbacks('mser_classifier_mdl_best_1.h5'))
+	model.fit_generator(generator, epochs=num_epochs, verbose=1, shuffle=True,
+			    validation_data=(test_inputs, test_labels),
+			    callbacks=[plot_losses]+callbacks('mser_classifier_mdl_best_1.h5'))
 	# Save the model as a json file
 	model_json = model.to_json()
 	with open("mser_classifier_model.json", "w") as json_file:
@@ -102,13 +106,30 @@ def train_vgg16(train_data_path, test_data_path):
 	# Function call for fine-tuning a previous layer of the model
 	fine_tune_vgg16(generator, train_inputs, train_labels, test_inputs, test_labels, num_epochs, batch_size, plot_losses)
 
+def get_classes_and_labels(data_path, mode='Train'):
+	# Enlist class-names in the given dataset
+	classes = os.listdir(data_path + mode + '/') #['Concert', 'Cooking', 'Craft', 'Teleshopping', 'Yoga']
+	# Sort class-names in lexicographical order
+	classes.sort()
+	# Declare an empty dictionary for class labels
+	labels = {}
+	# Prepare labels for each class
+	for i, c in enumerate(classes):
+		labels[c] = np.array([1 if (j==i) else 0 for j in range(len(classes))])
+	# Return class-names and labels
+	return (classes, labels)
+
 def main():
 	# Specify train set path
 	train_data_path = "MSERs/"
 	# Specify test set path
 	test_data_path = "MSERs/"
+	# Get classes in the dataset
+	classes, _ = get_classes_and_labels(train_data_path)
+	# Get number of classes in the dataset
+	num_classes = len(classes)
 	# Function-call for training and validating the model on the given dataset
-	train_vgg16(train_data_path, test_data_path)
+	train_vgg16(train_data_path, test_data_path, num_classes)
 
 if __name__ == "__main__":
 	main()
