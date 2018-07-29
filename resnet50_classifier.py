@@ -123,9 +123,9 @@ def get_classes_and_labels(data_path, mode='Train'):
 
 def main():
 	# Specify train set path
-	train_data_path = "/home/rick/Downloads/Datasets/Stanford_40_Actions/"
+	train_data_path = "Stanford_40_Actions/"
 	# Specify test set path
-	test_data_path = "/home/rick/Downloads/Datasets/Stanford_40_Actions/"
+	test_data_path = "Stanford_40_Actions/"
 	# Get classes in the dataset
 	classes, _ = get_classes_and_labels(train_data_path)
 	# Get number of classes in the dataset
