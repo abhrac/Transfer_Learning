@@ -15,7 +15,7 @@ from plot_losses import *
 from keras_callbacks import *
 from action_image_dataloader import *
 
-def train_combiner(train_inputs, train_labels, test_inputs, test_labels, num_classes):
+def train_combiner(train_inputs, train_labels, test_inputs, test_labels, input_vec_len, num_classes):
 	# Create PlotLosses object for plotting training loss
 	plot_losses = PlotLosses()
 	# Specify batch-size
@@ -23,7 +23,7 @@ def train_combiner(train_inputs, train_labels, test_inputs, test_labels, num_cla
 	# Specifiy number of epochs
 	num_epochs = 400
 	# Describe model architecture
-	inp = Input(shape=(11, ))
+	inp = Input(shape=(input_vec_len, ))
 	x = Dense(16, activation='relu')(inp)
 	predictions = Dense(num_classes, activation='softmax')(x)
 	# Create Model object
@@ -33,7 +33,7 @@ def train_combiner(train_inputs, train_labels, test_inputs, test_labels, num_cla
 	# Train model
 	model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, shuffle=True,
 				validation_data=(test_inputs, test_labels),
-				callbacks=[plot_losses]+callbacks('combiner_mdl_best.h5'))
+				callbacks=[plot_losses]+callbacks('combiner_mdl_best_2.h5'))
 	# Save the model as a json file
 	model_json = model.to_json()
 	with open("combiner_model.json", "w") as json_file:
@@ -52,10 +52,12 @@ def main():
 	train_inputs = np.squeeze(train_inputs, axis=1)
 	test_inputs = np.squeeze(test_inputs, axis=1)
 	print(train_inputs.shape, " ", test_inputs.shape)
+	# Get dimension of input feature vectors
+	input_vec_len = train_inputs.shape[1]
 	# Get number of classes
 	num_classes = train_labels.shape[1]
 	# Function-call for training the model-combiner
-	train_combiner(train_inputs, train_labels, test_inputs, test_labels, num_classes)
+	train_combiner(train_inputs, train_labels, test_inputs, test_labels, input_vec_len, num_classes)
 
 if __name__ == "__main__":
 	main()
