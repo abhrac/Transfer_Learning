@@ -94,18 +94,27 @@ def evaluate_classwise(data_path):
 	# Get class-names in the given dataset and corresponding class-labels
 	classes, labels = get_classes_and_labels(data_path)
 	pred_features = np.load("Test_pred_features.npy")
+	# Set start index for first class of images
+	start = 0
+	# Set initial prediction accuracy
+	accuracy = 0
 	# Perform class-wise evaluation
 	for (i, c) in enumerate(classes):
 		print("\nClass " + c + ":")
-		probabilities = pred_features[(i*100):(i+1)*100, :]
-		probabilities = np.squeeze(probabilities, axis=1)
 		# Get number of images
-		num_images = 100
+		num_images = len(glob.glob(data_path + 'Test/' + c + '/*'))
+		print(num_images)
+		# Set index of last image of class c
+		end = start + num_images
+		# Extract prediction probabilities from feature set
+		probabilities = pred_features[start:end, :]
+		probabilities = np.squeeze(probabilities, axis=1)
 		# Prepare labels for the images according to their class
 		test_labels = np.tile(labels[c],  (num_images, 1))
 		# Get positive classification score
 		pos_score = combiner_model.evaluate(probabilities, test_labels, batch_size=100, verbose=1)
 		print(pos_score)
+		accuracy = accuracy + pos_score[1]
 		# Calculate number of mis-classifications
 		for neg in classes:
 			if (neg == c):
@@ -117,6 +126,9 @@ def evaluate_classwise(data_path):
 			# Print mis-classification score
 			print(neg_score)
 		print()
+		# Set start index for next class of images
+		start = end
+	print('Final Accuracy = ', (accuracy/len(classes)))
 
 def main():
 	# Specify data path
