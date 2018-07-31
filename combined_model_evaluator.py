@@ -83,13 +83,8 @@ def evaluate_on_random_data(data_path):
 			print()
 
 def evaluate_classwise(data_path):
-	basis_model = load_model("resnet50")
-	mser_model = load_model("mser_classifier")
-	face_model = load_model("face_classifier")
+	# Load and compile model
 	combiner_model = load_model("combiner")
-	basis_model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics=['accuracy'])
-	mser_model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics=['accuracy'])
-	face_model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics=['accuracy'])
 	combiner_model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics=['accuracy'])
 	# Get class-names in the given dataset and corresponding class-labels
 	classes, labels = get_classes_and_labels(data_path)
@@ -135,7 +130,7 @@ def main():
 	data_path = "Action_Images/"
 	# Evaluate model on random data
 	evaluate_on_random_data(data_path)
-  # Evaluate model class-wise
+  	# Evaluate model class-wise
 	evaluate_classwise(data_path)
 
 if __name__ == "__main__":
