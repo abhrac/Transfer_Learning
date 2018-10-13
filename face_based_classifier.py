@@ -36,8 +36,8 @@ def fine_tune_vgg16(generator, train_inputs, train_labels, test_inputs, test_lab
 		layer.trainable = True
 	# Compile the model
 	model.compile(optimizer=SGD(lr=0.0001, momentum=0.9), loss='categorical_crossentropy', metrics=['accuracy'])
-	# Fine-tune the model wih a slow laerning rate and a non-adaptive optimization algorithm in-order
-	# to prevent massive gradient updates from wercking the previously learned weights
+	# Fine-tune the model wih a slow laerning rate and a non-adaptive optimization algorithm in order
+	# to prevent massive gradient updates from wrecking the previously learned weights
 	model.fit(x=train_inputs, y=train_labels, batch_size=batch_size, epochs=num_epochs, verbose=1, shuffle=True,
 		  validation_data=(test_inputs, test_labels),
 		  callbacks=[plot_losses]+callbacks('face_classifier_mdl_best_2.h5'))
@@ -75,9 +75,9 @@ def train_vgg16(train_data_path, test_data_path, num_classes):
 	# Create PlotLosses object for plotting training loss
 	plot_losses = PlotLosses()
 	# Specify batch-size
-	batch_size = 2
+	batch_size = 100
 	# Specifiy number of epochs
-	num_epochs = 2
+	num_epochs = 50
 	# Create data-generator
 	generator  = datagen.flow(train_inputs, train_labels, batch_size=batch_size)
 	# Load base-model VGG16
