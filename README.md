@@ -1,2 +1,2 @@
-# Action_Image_Classification
-A Deep Learning based construct for classifying Action Images
+# Transfer_Learning
+An illustration of transfer learning based image classification.
